@@ -1,6 +1,9 @@
 export interface Servico {
   id: number;
   nome: string;
-  contato: string;
-  logo: string;
+  descricao: string;
+  preco: number;
+  imagens: string[];
+  fornecerId: number;
+
 }
