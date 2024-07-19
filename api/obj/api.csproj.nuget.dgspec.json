@@ -1,25 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\arqan\\Dropbox\\UFRN\\TCE-RN\\PROJETO\\portal-servicos-tce\\api\\api.csproj": {}
+    "C:\\Users\\felip\\Documents\\Github\\portal-servicos-tce\\api\\api.csproj": {}
   },
   "projects": {
-    "C:\\Users\\arqan\\Dropbox\\UFRN\\TCE-RN\\PROJETO\\portal-servicos-tce\\api\\api.csproj": {
+    "C:\\Users\\felip\\Documents\\Github\\portal-servicos-tce\\api\\api.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\arqan\\Dropbox\\UFRN\\TCE-RN\\PROJETO\\portal-servicos-tce\\api\\api.csproj",
+        "projectUniqueName": "C:\\Users\\felip\\Documents\\Github\\portal-servicos-tce\\api\\api.csproj",
         "projectName": "api",
-        "projectPath": "C:\\Users\\arqan\\Dropbox\\UFRN\\TCE-RN\\PROJETO\\portal-servicos-tce\\api\\api.csproj",
-        "packagesPath": "C:\\Users\\arqan\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\arqan\\Dropbox\\UFRN\\TCE-RN\\PROJETO\\portal-servicos-tce\\api\\obj\\",
+        "projectPath": "C:\\Users\\felip\\Documents\\Github\\portal-servicos-tce\\api\\api.csproj",
+        "packagesPath": "C:\\Users\\felip\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\felip\\Documents\\Github\\portal-servicos-tce\\api\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\arqan\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\felip\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -43,9 +46,25 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
-            "Microsoft.AspNetCore.OpenApi": {
+            "Microsoft.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[8.0.6, )"
+              "version": "[8.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.3, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[8.0.3, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
@@ -71,7 +90,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.301/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
