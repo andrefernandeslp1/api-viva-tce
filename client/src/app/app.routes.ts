@@ -16,7 +16,7 @@ import { HeaderComponent } from './components/header/header.component';
 
 export const routes: Routes = [
 
-  { path: '', redirectTo: '/landing', pathMatch: 'full' },
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
 
   { path: 'landing', component: LandingComponent },
 
@@ -36,7 +36,7 @@ export const routes: Routes = [
     path: 'servico/form',
     component: FormServicoComponent,
     canActivate: [authGuard, roleGuard],
-    data: {expectedRoles: ['fornecedor']}
+    data: {expectedRoles: ['vendedor']}
   },
   {
     path: 'servico/:id/detalhes',
@@ -61,7 +61,7 @@ export const routes: Routes = [
       path: 'usuario/:id/perfil',
       component: PerfilUsuarioComponent,
       canActivate: [authGuard, roleGuard],
-      data: {expectedRoles: ['admin', 'client']}
+      data: {expectedRoles: ['admin', 'cliente']}
     },
 
     // FORNECEDOR
@@ -69,7 +69,7 @@ export const routes: Routes = [
       path: 'fornecedor',
       component: ListFornecedorComponent,
       canActivate: [authGuard, roleGuard],
-      data: {expectedRoles: ['admin', 'client']}
+      data: {expectedRoles: ['admin', 'cliente']}
     },
     {
       path: 'fornecedor/form',
@@ -81,9 +81,9 @@ export const routes: Routes = [
       path: 'fornecedor/:id/perfil',
       component: PerfilFornecedorComponent,
       canActivate: [authGuard, roleGuard],
-      data: {expectedRoles: ['admin', 'client']}
+      data: {expectedRoles: ['admin', 'cliente']}
     },
 
-    { path: 'header', component: HeaderComponent },
+    { path: 'header', component: HeaderComponent }, //PARA TESTES SOMENTE, POIS JÁ ESTARÁ INCLUÍDO NOS COMPONENTES
 
 ];

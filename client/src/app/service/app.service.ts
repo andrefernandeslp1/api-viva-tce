@@ -11,8 +11,6 @@ export class AppService {
 
   jwtTokenService = inject(JWTTokenService);
 
-  home = signal<string>('/home');
-
   userLogged = signal<any>({
     id: this.jwtTokenService.getUserId(),
     nome: this.jwtTokenService.getUser(),
@@ -32,10 +30,10 @@ export class AppService {
         if (token) {
           localStorage.setItem('jwt-token', token);
         }
-        if(response.body.user.id) {
-          localStorage.setItem('userId', response.body.user.id);
+        if(response.body.usuario.id) {
+          localStorage.setItem('userId', response.body.usuario.id);
         }
-        this.userLogged.set(response.body.user);
+        this.userLogged.set(response.body.usuario);
       })
     );
   }
@@ -48,10 +46,10 @@ export class AppService {
         if (token) {
           localStorage.setItem('jwt-token', token);
         }
-        if(response.body.user.id) {
-          localStorage.setItem('userId', response.body.user.id);
+        if(response.body.usuario.id) {
+          localStorage.setItem('userId', response.body.usuario.id);
         }
-        this.userLogged.set(response.body.user);
+        this.userLogged.set(response.body.usuario);
       })
     );
   }
