@@ -1,6 +1,6 @@
-
-
 using API.Context;
+using API.DTOs.Mappings;
+using API.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,8 +16,11 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 
 // builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 // builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
-// builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-// builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
+builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+builder.Services.AddAutoMapper(typeof(ApiDTOMappingProfile));
 
 
 builder.Services.AddEndpointsApiExplorer();
