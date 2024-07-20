@@ -5,6 +5,7 @@ namespace API.Repositories;
 public class UnitOfWork : IUnitOfWork
 {
     private IUsuarioRepository? _userRepo;
+    private IFornecedorRepository? _fornecedorRepo;
 
     public AppDbContext _context;
     public UnitOfWork(AppDbContext context)
@@ -22,6 +23,14 @@ public class UnitOfWork : IUnitOfWork
             //    _userRepo = new UsuarioRepository(_context);
             //}
             //return _userRepo;
+        }
+    }
+
+    public IFornecedorRepository FornecedorRepository
+    {
+        get
+        {
+            return _fornecedorRepo = _fornecedorRepo ?? new FornecedorRepository(_context);
         }
     }
 

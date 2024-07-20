@@ -12,10 +12,10 @@ export class AppService {
   jwtTokenService = inject(JWTTokenService);
 
   userLogged = signal<any>({
-    id: this.jwtTokenService.getUserId(),
-    nome: this.jwtTokenService.getUser(),
-    email: this.jwtTokenService.getEmail(),
-    role: this.jwtTokenService.getRole(),
+    id: 0,
+    nome: 'John Doe',
+    email: 'john@gmail.com',
+    role: 'admin',
   });
 
   public API_URL = 'http://localhost:3000';
