@@ -61,6 +61,7 @@ namespace API.Controllers
             return Ok(novoUsuarioDTO);
 
         }
+        
         [HttpPut("{id:int}")]
         public ActionResult<UsuarioDTO> Put (int id, UsuarioDTO usuarioDTO)
         {
