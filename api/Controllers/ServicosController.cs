@@ -65,8 +65,16 @@ namespace API.Controllers
         [HttpPut("{id:int}")]
         public async Task<ActionResult<ServicoPostDTO>> Put (int id, ServicoPostDTO servicoPostDTO)
         {
-            if (id != servicoPostDTO.Id)
-            return BadRequest();
+            if (servicoPostDTO == null)
+                return BadRequest("O corpo da requisição não pode ser nulo.");
+        
+            if (id != servicoPostDTO.Id) 
+                return BadRequest("Os ids fornecidos não são compatíveis");
+
+            var existeServico = await _uof.ServicoRepository.GetAsync(p => p.Id == id);
+            
+            if (existeServico == null)
+                return NotFound("Serviço não encontrado.");
 
             var servico = _mapper.Map<Servico>(servicoPostDTO);
             var servicoAtualizado = await _uof.ServicoRepository.UpdateAsync(servico);

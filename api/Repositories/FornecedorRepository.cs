@@ -3,7 +3,7 @@ using API.Models;
 
 namespace API.Repositories;
 
-public class FornecedorRepository : Repository<Fornecedor>, IFornecedorRepository
+public class FornecedorRepository : RepositoryAsync<Fornecedor>, IFornecedorRepository
 {
     public FornecedorRepository(AppDbContext context): base(context)
     {       
