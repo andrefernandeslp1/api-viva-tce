@@ -4556,27 +4556,24 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\felip\\.nuget\\packages\\": {}
+    "C:\\Users\\T-GAMER\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\felip\\Documents\\Github\\portal-servicos-tce\\api\\api.csproj",
+      "projectUniqueName": "C:\\Users\\T-GAMER\\OneDrive\\Documentos\\TCE\\Viva Tce\\api-viva-tce\\api\\api.csproj",
       "projectName": "api",
-      "projectPath": "C:\\Users\\felip\\Documents\\Github\\portal-servicos-tce\\api\\api.csproj",
-      "packagesPath": "C:\\Users\\felip\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\felip\\Documents\\Github\\portal-servicos-tce\\api\\obj\\",
+      "projectPath": "C:\\Users\\T-GAMER\\OneDrive\\Documentos\\TCE\\Viva Tce\\api-viva-tce\\api\\api.csproj",
+      "packagesPath": "C:\\Users\\T-GAMER\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\T-GAMER\\OneDrive\\Documentos\\TCE\\Viva Tce\\api-viva-tce\\api\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\felip\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Users\\T-GAMER\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
       ],
       "sources": {
-        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
-        "C:\\Program Files\\dotnet\\library-packs": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {

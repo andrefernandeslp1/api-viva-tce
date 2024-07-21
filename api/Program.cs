@@ -14,11 +14,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(mySqlConnection)
 );
 
-// builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
-// builder.Services.AddScoped<IProdutoRepository, ProdutoRepository>();
 builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+builder.Services.AddScoped(typeof(IRepositoryAsync<>), typeof(RepositoryAsync<>));
 
 builder.Services.AddAutoMapper(typeof(ApiDTOMappingProfile));
 

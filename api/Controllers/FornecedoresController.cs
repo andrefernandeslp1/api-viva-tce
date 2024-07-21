@@ -23,7 +23,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<FornecedorDTO>>> Get()
         {
-            var fornecedor = _uof.FornecedorRepository.GetAll();
+            var fornecedor = await _uof.FornecedorRepository.GetAllAsync();
             if (fornecedor is null)
             {
                 return NotFound();
@@ -35,7 +35,7 @@ namespace API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<FornecedorDTO>> Get(int id)
         {
-            var fornecedor = _uof.FornecedorRepository.Get(user => user.Id == id);
+            var fornecedor = await _uof.FornecedorRepository.GetAsync(p => p.Id == id);
             if (fornecedor is null)
             {
                 return NotFound();
@@ -45,7 +45,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<FornecedorDTO> Post(FornecedorDTO fornecedorDTO)
+        public async Task<ActionResult<FornecedorDTO>> Post(FornecedorDTO fornecedorDTO)
         {
             if (fornecedorDTO is null)
             {
@@ -53,7 +53,7 @@ namespace API.Controllers
             }
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorDTO);
-            var novoFornecedor = _uof.FornecedorRepository.Create(fornecedor);
+            var novoFornecedor = await _uof.FornecedorRepository.CreateAsync(fornecedor);
             _uof.Commit();
 
             var novoFornecedorDTO = _mapper.Map<FornecedorDTO>(novoFornecedor);
@@ -61,13 +61,22 @@ namespace API.Controllers
 
         }
         [HttpPut("{id:int}")]
-        public ActionResult<FornecedorDTO> Put (int id, FornecedorDTO fornecedorDTO)
+        public async Task<ActionResult<FornecedorDTO>> Put (int id, FornecedorDTO fornecedorDTO)
         {
-            if (id != fornecedorDTO.Id)
-            return BadRequest();//400
+
+            if (fornecedorDTO == null)
+                return BadRequest("O corpo da requisição não pode ser nulo.");
+        
+            if (id != fornecedorDTO.Id) 
+                return BadRequest("Os ids fornecidos não são compatíveis");
+
+            var existeFornecedor = await _uof.FornecedorRepository.GetAsync(p => p.Id == id);
+            
+            if (existeFornecedor == null)
+                return NotFound("Fornecedor não encontrado.");
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorDTO);
-            var fornecedorAtualizado = _uof.FornecedorRepository.Update(fornecedor);
+            var fornecedorAtualizado = await _uof.FornecedorRepository.UpdateAsync(fornecedor);
             _uof.Commit();
 
             var fornecedorAtualizadoDTO = _mapper.Map<FornecedorDTO>(fornecedorAtualizado);
@@ -76,14 +85,13 @@ namespace API.Controllers
         }
         
         [HttpDelete("{id:int}")]
-        public ActionResult<FornecedorDTO> Delete(int id)
+        public async Task<ActionResult<FornecedorDTO>> Delete(int id)
         {
-            var fornecedor = _uof.FornecedorRepository.Get(user => user.Id == id);
+            var fornecedor = await _uof.FornecedorRepository.GetAsync(p => p.Id == id);
             if (fornecedor is null)
-            {
                 return NotFound("Usuário não encontrado");
-            }
-            var fornecedorDeletado = _uof.FornecedorRepository.Delete(fornecedor);
+                
+            var fornecedorDeletado = await _uof.FornecedorRepository.DeleteAsync(fornecedor);
             _uof.Commit();
 
             var fornecedorDeletadoDTO = _mapper.Map<FornecedorDTO>(fornecedorDeletado);

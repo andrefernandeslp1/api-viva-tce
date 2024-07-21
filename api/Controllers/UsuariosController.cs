@@ -24,7 +24,7 @@ namespace API.Controllers
         [HttpGet]
         public async Task<ActionResult<List<UsuarioDTO>>> Get()
         {
-            var usuarios = _uof.UsuarioRepository.GetAll();
+            var usuarios = await _uof.UsuarioRepository.GetAllAsync();
             if (usuarios is null)
             {
                 return NotFound();
@@ -36,7 +36,7 @@ namespace API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<UsuarioDTO>> Get(int id)
         {
-            var usuario = _uof.UsuarioRepository.Get(user => user.Id == id);
+            var usuario = await _uof.UsuarioRepository.GetAsync(user => user.Id == id);
             if (usuario is null)
             {
                 return NotFound();
@@ -46,15 +46,14 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UsuarioDTO> Post(UsuarioDTO usuarioDTO)
+        public async Task<ActionResult<UsuarioDTO>> Post(UsuarioDTO usuarioDTO)
         {
-            if (usuarioDTO is null)
-            {
-            return BadRequest();
+            if (usuarioDTO is null){
+                return BadRequest();
             }
 
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
-            var novoUsuario = _uof.UsuarioRepository.Create(usuario);
+            var novoUsuario = await _uof.UsuarioRepository.CreateAsync(usuario);
             _uof.Commit();
 
             var novoUsuarioDTO = _mapper.Map<UsuarioDTO>(novoUsuario);
@@ -63,13 +62,21 @@ namespace API.Controllers
         }
         
         [HttpPut("{id:int}")]
-        public ActionResult<UsuarioDTO> Put (int id, UsuarioDTO usuarioDTO)
+        public async Task<ActionResult<UsuarioDTO>> Put (int id, UsuarioDTO usuarioDTO)
         {
-            if (id != usuarioDTO.Id)
-            return BadRequest();//400
+            if (usuarioDTO == null)
+                return BadRequest("O corpo da requisição não pode ser nulo.");
+        
+            if (id != usuarioDTO.Id) 
+                return BadRequest("Os ids fornecidos não são compatíveis");
+
+            var existeUsuário = await _uof.UsuarioRepository.GetAsync(p => p.Id == id);
+            
+            if (existeUsuário == null)
+                return NotFound("Usuário não encontrado.");
 
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
-            var usuarioAtualizado = _uof.UsuarioRepository.Update(usuario);
+            var usuarioAtualizado = await _uof.UsuarioRepository.UpdateAsync(usuario);
             _uof.Commit();
 
             var usuarioAtualizadoDTO = _mapper.Map<UsuarioDTO>(usuarioAtualizado);
@@ -78,14 +85,14 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public ActionResult<UsuarioDTO> Delete(int id)
+        public async Task<ActionResult<UsuarioDTO>> Delete(int id)
         {
-            var usuario = _uof.UsuarioRepository.Get(user => user.Id == id);
+            var usuario = await _uof.UsuarioRepository.GetAsync(user => user.Id == id);
             if (usuario is null)
             {
                 return NotFound("Usuário não encontrado");
             }
-            var usuarioDeletado = _uof.UsuarioRepository.Delete(usuario);
+            var usuarioDeletado = await _uof.UsuarioRepository.DeleteAsync(usuario);
             _uof.Commit();
 
             var usuarioDeletadoDto = _mapper.Map<UsuarioDTO>(usuarioDeletado);
