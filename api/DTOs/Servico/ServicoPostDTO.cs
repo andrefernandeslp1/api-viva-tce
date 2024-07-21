@@ -4,10 +4,8 @@ using Microsoft.AspNetCore.SignalR;
 
 namespace API.Models;
 
-[Table("Servicos")]
-public class Servico
+public class ServicoPostDTO
 {
-    [Key]
     public int Id {get; set;}
 
     [Required]
@@ -19,8 +17,7 @@ public class Servico
 
     public string Imagens {get; set;}
 
-    [ForeignKey("FornecedorId")]
     public int FornecedorId {get; set;}
-    public Fornecedor fornecedor {get; set;}
+
 
 }

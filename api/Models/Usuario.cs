@@ -23,7 +23,7 @@ public class Usuario
     public string Email { get; set; }
     
     [StringLength(200)]
-    public string Endereco { get; set; }
+    public string Telefone { get; set; }
     
     [Required]
     [StringLength(10)]
