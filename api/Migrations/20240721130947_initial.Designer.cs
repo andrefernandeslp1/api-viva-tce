@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240719102912_migração inicial")]
-    partial class migraçãoinicial
+    [Migration("20240721130947_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -124,11 +124,6 @@ namespace api.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("Endereco")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -143,6 +138,11 @@ namespace api.Migrations
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("Telefone")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
 
@@ -162,21 +162,21 @@ namespace api.Migrations
 
             modelBuilder.Entity("API.Models.ServicoUsuario", b =>
                 {
-                    b.HasOne("API.Models.Servico", "servico")
+                    b.HasOne("API.Models.Servico", "Servico")
                         .WithMany()
                         .HasForeignKey("ServicoId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("API.Models.Usuario", "usuario")
+                    b.HasOne("API.Models.Usuario", "Usuario")
                         .WithMany()
                         .HasForeignKey("UsuarioId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("servico");
+                    b.Navigation("Servico");
 
-                    b.Navigation("usuario");
+                    b.Navigation("Usuario");
                 });
 #pragma warning restore 612, 618
         }
