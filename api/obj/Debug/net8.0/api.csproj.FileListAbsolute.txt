@@ -1,5 +1,4 @@
 C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\appsettings.Development.json
-C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\appsettings.json
 C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\api.exe
 C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\api.deps.json
 C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\api.runtimeconfig.json
@@ -136,3 +135,5 @@ C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\runtime
 C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Security.Cryptography.ProtectedData.dll
 C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\runtimes\win\lib\net6.0\System.Windows.Extensions.dll
 C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\appsettings.json

@@ -3,6 +3,7 @@ using API.DTOs;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore; 
 
@@ -21,6 +22,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<FornecedorDTO>>> Get()
         {
             var fornecedor = await _uof.FornecedorRepository.GetAllAsync();
