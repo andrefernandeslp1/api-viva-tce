@@ -22,15 +22,30 @@ builder.Services.AddScoped<IUsuarioRepository, UsuarioRepository>();
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 builder.Services.AddScoped(typeof(IRepositoryAsync<>), typeof(RepositoryAsync<>));
+builder.Services.AddScoped<TokenService>();
 
 builder.Services.AddAutoMapper(typeof(ApiDTOMappingProfile));
 
-builder.Services.AddAuthentication("Bearer").AddJwtBearer();
-
+builder.Services.AddAuthentication(opt => {
+           opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+           opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+       })
+      .AddJwtBearer(options =>
+       {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+});
 
 builder.Services.AddAuthorization();
 
-builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(c =>
 {
     c.SwaggerDoc("v1", new OpenApiInfo { Title = "Viva TCE", Version = "v1" });
@@ -61,6 +76,9 @@ builder.Services.AddSwaggerGen(c =>
 });
 
 
+builder.Services.AddEndpointsApiExplorer();
+
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -71,6 +89,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();

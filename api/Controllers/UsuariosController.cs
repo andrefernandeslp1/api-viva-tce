@@ -12,19 +12,19 @@ namespace API.Controllers
     [ApiController]
     public class UsuariosController : ControllerBase
     {
-        private readonly IUnitOfWork _uof;
+        private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
 
-        public UsuariosController(IUnitOfWork uof, IMapper mapper)
+        public UsuariosController(IUnitOfWork uow, IMapper mapper)
         {
-            _uof = uof;
+            _uow = uow;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<UsuarioDTO>>> Get()
         {
-            var usuarios = await _uof.UsuarioRepository.GetAllAsync();
+            var usuarios = await _uow.UsuarioRepository.GetAllAsync();
             if (usuarios is null)
             {
                 return NotFound();
@@ -36,7 +36,7 @@ namespace API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<UsuarioDTO>> Get(int id)
         {
-            var usuario = await _uof.UsuarioRepository.GetAsync(user => user.Id == id);
+            var usuario = await _uow.UsuarioRepository.GetAsync(user => user.Id == id);
             if (usuario is null)
             {
                 return NotFound();
@@ -53,8 +53,8 @@ namespace API.Controllers
             }
 
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
-            var novoUsuario = await _uof.UsuarioRepository.CreateAsync(usuario);
-            _uof.Commit();
+            var novoUsuario = await _uow.UsuarioRepository.CreateAsync(usuario);
+            _uow.Commit();
 
             var novoUsuarioDTO = _mapper.Map<UsuarioDTO>(novoUsuario);
             return Ok(novoUsuarioDTO);
@@ -70,14 +70,14 @@ namespace API.Controllers
             if (id != usuarioDTO.Id) 
                 return BadRequest("Os ids fornecidos não são compatíveis");
 
-            var existeUsuário = await _uof.UsuarioRepository.GetAsync(p => p.Id == id);
+            var existeUsuário = await _uow.UsuarioRepository.GetAsync(p => p.Id == id);
             
             if (existeUsuário == null)
                 return NotFound("Usuário não encontrado.");
 
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
-            var usuarioAtualizado = await _uof.UsuarioRepository.UpdateAsync(usuario);
-            _uof.Commit();
+            var usuarioAtualizado = await _uow.UsuarioRepository.UpdateAsync(usuario);
+            _uow.Commit();
 
             var usuarioAtualizadoDTO = _mapper.Map<UsuarioDTO>(usuarioAtualizado);
 
@@ -87,13 +87,13 @@ namespace API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<UsuarioDTO>> Delete(int id)
         {
-            var usuario = await _uof.UsuarioRepository.GetAsync(user => user.Id == id);
+            var usuario = await _uow.UsuarioRepository.GetAsync(user => user.Id == id);
             if (usuario is null)
             {
                 return NotFound("Usuário não encontrado");
             }
-            var usuarioDeletado = await _uof.UsuarioRepository.DeleteAsync(usuario);
-            _uof.Commit();
+            var usuarioDeletado = await _uow.UsuarioRepository.DeleteAsync(usuario);
+            _uow.Commit();
 
             var usuarioDeletadoDto = _mapper.Map<UsuarioDTO>(usuarioDeletado);
 
