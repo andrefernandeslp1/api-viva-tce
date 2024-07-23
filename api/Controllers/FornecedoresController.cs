@@ -22,7 +22,6 @@ namespace API.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<List<FornecedorDTO>>> Get()
         {
             var fornecedor = await _uof.FornecedorRepository.GetAllAsync();
