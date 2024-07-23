@@ -4,7 +4,8 @@ using API.Models;
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -22,6 +23,7 @@ namespace API.Controllers
         }
         
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<ServicoGetDTO>>> Get()
         {
             var servicos = await _uow.ServicoRepository.GetAllWithFornecedoresAsync();

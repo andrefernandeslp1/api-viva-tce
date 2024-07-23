@@ -14,7 +14,7 @@ public class TokenService : ITokenService
         _config = Configuration;
     }
 
-    public string GenerateToken(string email, bool Role)
+    public string GenerateToken(string email)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
@@ -22,7 +22,6 @@ public class TokenService : ITokenService
         var claims = new List<Claim>
         {
             new Claim(ClaimTypes.Email, email),
-            new Claim(ClaimTypes.Role, Role ? "Admin" : "User")
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor

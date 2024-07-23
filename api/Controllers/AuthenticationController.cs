@@ -31,7 +31,7 @@ namespace Api.Controllers
         if (usuario == null)
             return Unauthorized();
 
-        var token = _tokenService.GenerateToken(usuario.Email, usuario.Role == "Admin");
+        var token = _tokenService.GenerateToken(usuario.Email);
 
         return Ok(new { Token = token });
 
