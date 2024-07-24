@@ -44,7 +44,10 @@ options.TokenValidationParameters = new TokenValidationParameters
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+});
 
 builder.Services.AddSwaggerGen(c =>
 {
