@@ -20,4 +20,9 @@ public class ServicoRepository : RepositoryAsync<Servico>, IServicoRepository
         return await _context.Servicos.Include(s => s.fornecedor).FirstOrDefaultAsync(s => s.Id == id);
     }
 
+    public async Task<List<Servico>> GetServicosByFornecedorId(int id)
+    {
+        return await _context.Servicos.Where(f => f.FornecedorId == id).ToListAsync();
+    }
+
 }
