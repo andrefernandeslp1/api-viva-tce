@@ -103,7 +103,7 @@ namespace API.Controllers
             return Ok(servicoDeletadoDTO);
         }
 
-        [HttpGet("compras/{id:int}")]
+        [HttpGet("fornecedor/{id:int}")]
         public async Task<ActionResult<List<ServicoGetDTO>>> GetServicosPorFornecedor (int id)
         {
             var servico = await _uow.ServicoRepository.GetServicosByFornecedorId(id);
