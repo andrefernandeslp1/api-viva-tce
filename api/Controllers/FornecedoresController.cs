@@ -22,7 +22,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        [Authorize]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<FornecedorDTO>>> Get()
         {
             var fornecedor = await _uow.FornecedorRepository.GetAllAsync();
@@ -35,6 +35,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<FornecedorDTO>> Get(int id)
         {
             var fornecedor = await _uow.FornecedorRepository.GetAsync(p => p.Id == id);
