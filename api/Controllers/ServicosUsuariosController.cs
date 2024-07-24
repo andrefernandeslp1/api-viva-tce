@@ -12,19 +12,19 @@ namespace API.Controllers
     [ApiController]
      public class ServicosUsuariosController : ControllerBase
      {
-        private readonly IUnitOfWork _uof;
+        private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
 
-        public ServicosUsuariosController(IUnitOfWork uof, IMapper mapper)
+        public ServicosUsuariosController(IUnitOfWork uow, IMapper mapper)
         {
-            _uof = uof;
+            _uow = uow;
             _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<List<ServicoUsuarioGetDTO>>> Get()
         {
-            var servicosUsuarios = await _uof.ServicoUsuarioRepository.GetAllWithDataAsync();
+            var servicosUsuarios = await _uow.ServicoUsuarioRepository.GetAllWithDataAsync();
             if (servicosUsuarios is null)
             {
                 return NotFound();
@@ -36,7 +36,7 @@ namespace API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ServicoUsuarioGetDTO>> Get(int id)
         {
-            var servicoUsuario = await _uof.ServicoUsuarioRepository.GetByIdWithDataAsync(id);
+            var servicoUsuario = await _uow.ServicoUsuarioRepository.GetByIdWithDataAsync(id);
             if (servicoUsuario is null)
             {
                 return NotFound();
@@ -54,8 +54,8 @@ namespace API.Controllers
             }
 
             var servicoUsuario = _mapper.Map<ServicoUsuario>(servicoUsuarioDTO);
-            var novoServicoUsuario = await _uof.ServicoUsuarioRepository.CreateAsync(servicoUsuario);
-            _uof.Commit();
+            var novoServicoUsuario = await _uow.ServicoUsuarioRepository.CreateAsync(servicoUsuario);
+            _uow.Commit();
 
             var novoServicoDTO = _mapper.Map<ServicoUsuarioPostDTO>(novoServicoUsuario);
             return Ok(novoServicoDTO);
@@ -72,14 +72,14 @@ namespace API.Controllers
             if (id != servicoUsuarioPostDTO.Id) 
                 return BadRequest("Os ids fornecidos não são compatíveis");
 
-            var existeServicoUsuario = await _uof.ServicoUsuarioRepository.GetAsync(p => p.Id == id);
+            var existeServicoUsuario = await _uow.ServicoUsuarioRepository.GetAsync(p => p.Id == id);
             
             if (existeServicoUsuario == null)
                 return NotFound("Serviço-Usuário não encontrado.");
 
             var servicoUsuario = _mapper.Map<ServicoUsuario>(servicoUsuarioPostDTO);
-            var servicoUsuarioAtualizado = await _uof.ServicoUsuarioRepository.UpdateAsync(servicoUsuario);
-            _uof.Commit();
+            var servicoUsuarioAtualizado = await _uow.ServicoUsuarioRepository.UpdateAsync(servicoUsuario);
+            _uow.Commit();
 
             var servicoUsuarioAtualizadoDTO = _mapper.Map<ServicoUsuarioPostDTO>(servicoUsuarioAtualizado);
             return Ok(servicoUsuarioAtualizadoDTO);
@@ -88,13 +88,13 @@ namespace API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<ServicoUsuarioGetDTO>> Delete(int id)
         {
-            var servicoUsuario = await _uof.ServicoUsuarioRepository.GetByIdWithDataAsync(id);
+            var servicoUsuario = await _uow.ServicoUsuarioRepository.GetByIdWithDataAsync(id);
             if (servicoUsuario is null)
             {
                 return NotFound("Serviço-Usuário não encontrado");
             }
-            var servicoUsuarioDeletado = await _uof.ServicoUsuarioRepository.DeleteAsync(servicoUsuario);
-            _uof.Commit();
+            var servicoUsuarioDeletado = await _uow.ServicoUsuarioRepository.DeleteAsync(servicoUsuario);
+            _uow.Commit();
 
             var servicoUsuarioDeletadoDTO = _mapper.Map<ServicoUsuarioGetDTO>(servicoUsuarioDeletado);
 

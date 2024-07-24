@@ -3,6 +3,7 @@ using API.DTOs;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore; 
 
@@ -12,18 +13,19 @@ namespace API.Controllers
     [ApiController]
      public class FornecedoresController: ControllerBase
      {
-        private readonly IUnitOfWork _uof;
+        private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
 
-        public FornecedoresController(IUnitOfWork uof, IMapper mapper)
+        public FornecedoresController(IUnitOfWork uow, IMapper mapper)
         {
-            _uof = uof;
+            _uow = uow;
             _mapper = mapper;
         }
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<FornecedorDTO>>> Get()
         {
-            var fornecedor = await _uof.FornecedorRepository.GetAllAsync();
+            var fornecedor = await _uow.FornecedorRepository.GetAllAsync();
             if (fornecedor is null)
             {
                 return NotFound();
@@ -35,7 +37,7 @@ namespace API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<FornecedorDTO>> Get(int id)
         {
-            var fornecedor = await _uof.FornecedorRepository.GetAsync(p => p.Id == id);
+            var fornecedor = await _uow.FornecedorRepository.GetAsync(p => p.Id == id);
             if (fornecedor is null)
             {
                 return NotFound();
@@ -53,8 +55,8 @@ namespace API.Controllers
             }
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorDTO);
-            var novoFornecedor = await _uof.FornecedorRepository.CreateAsync(fornecedor);
-            _uof.Commit();
+            var novoFornecedor = await _uow.FornecedorRepository.CreateAsync(fornecedor);
+            _uow.Commit();
 
             var novoFornecedorDTO = _mapper.Map<FornecedorDTO>(novoFornecedor);
             return Ok(novoFornecedorDTO);
@@ -70,14 +72,14 @@ namespace API.Controllers
             if (id != fornecedorDTO.Id) 
                 return BadRequest("Os ids fornecidos não são compatíveis");
 
-            var existeFornecedor = await _uof.FornecedorRepository.GetAsync(p => p.Id == id);
+            var existeFornecedor = await _uow.FornecedorRepository.GetAsync(p => p.Id == id);
             
             if (existeFornecedor == null)
                 return NotFound("Fornecedor não encontrado.");
 
             var fornecedor = _mapper.Map<Fornecedor>(fornecedorDTO);
-            var fornecedorAtualizado = await _uof.FornecedorRepository.UpdateAsync(fornecedor);
-            _uof.Commit();
+            var fornecedorAtualizado = await _uow.FornecedorRepository.UpdateAsync(fornecedor);
+            _uow.Commit();
 
             var fornecedorAtualizadoDTO = _mapper.Map<FornecedorDTO>(fornecedorAtualizado);
 
@@ -87,12 +89,12 @@ namespace API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<FornecedorDTO>> Delete(int id)
         {
-            var fornecedor = await _uof.FornecedorRepository.GetAsync(p => p.Id == id);
+            var fornecedor = await _uow.FornecedorRepository.GetAsync(p => p.Id == id);
             if (fornecedor is null)
                 return NotFound("Usuário não encontrado");
                 
-            var fornecedorDeletado = await _uof.FornecedorRepository.DeleteAsync(fornecedor);
-            _uof.Commit();
+            var fornecedorDeletado = await _uow.FornecedorRepository.DeleteAsync(fornecedor);
+            _uow.Commit();
 
             var fornecedorDeletadoDTO = _mapper.Map<FornecedorDTO>(fornecedorDeletado);
 

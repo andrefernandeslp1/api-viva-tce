@@ -121,6 +121,9 @@ namespace api.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
+                    b.Property<int?>("FornecedorId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nome")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -142,6 +145,8 @@ namespace api.Migrations
                         .HasColumnType("nvarchar(200)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("FornecedorId");
 
                     b.ToTable("Usuarios");
                 });
@@ -174,6 +179,15 @@ namespace api.Migrations
                     b.Navigation("Servico");
 
                     b.Navigation("Usuario");
+                });
+
+            modelBuilder.Entity("API.Models.Usuario", b =>
+                {
+                    b.HasOne("API.Models.Fornecedor", "fornecedor")
+                        .WithMany()
+                        .HasForeignKey("FornecedorId");
+
+                    b.Navigation("fornecedor");
                 });
 #pragma warning restore 612, 618
         }

@@ -4,7 +4,8 @@ using API.Models;
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; 
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 
 namespace API.Controllers
 {
@@ -12,19 +13,20 @@ namespace API.Controllers
     [ApiController]
      public class ServicosController : ControllerBase 
      {
-        private readonly IUnitOfWork _uof;
+        private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
 
-        public ServicosController(IUnitOfWork uof, IMapper mapper)
+        public ServicosController(IUnitOfWork uow, IMapper mapper)
         {
-            _uof = uof;
+            _uow = uow;
             _mapper = mapper;
         }
         
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<ServicoGetDTO>>> Get()
         {
-            var servicos = await _uof.ServicoRepository.GetAllWithFornecedoresAsync();
+            var servicos = await _uow.ServicoRepository.GetAllWithFornecedoresAsync();
             if (servicos is null)
             {
                 return NotFound();
@@ -36,7 +38,7 @@ namespace API.Controllers
         [HttpGet("{id:int}")]
         public async Task<ActionResult<ServicoGetDTO>> Get(int id)
         {
-            var servico = await _uof.ServicoRepository.GetbyIdWithFornecedoresAsync(id);
+            var servico = await _uow.ServicoRepository.GetbyIdWithFornecedoresAsync(id);
             if (servico is null)
             {
                 return NotFound();
@@ -54,8 +56,8 @@ namespace API.Controllers
             }
 
             var servico = _mapper.Map<Servico>(servicoDTO);
-            var novoServico = await _uof.ServicoRepository.CreateAsync(servico);
-            _uof.Commit();
+            var novoServico = await _uow.ServicoRepository.CreateAsync(servico);
+            _uow.Commit();
 
             var novoServicoDTO = _mapper.Map<ServicoPostDTO>(novoServico);
             return Ok(novoServicoDTO);
@@ -71,14 +73,14 @@ namespace API.Controllers
             if (id != servicoPostDTO.Id) 
                 return BadRequest("Os ids fornecidos não são compatíveis");
 
-            var existeServico = await _uof.ServicoRepository.GetAsync(p => p.Id == id);
+            var existeServico = await _uow.ServicoRepository.GetAsync(p => p.Id == id);
             
             if (existeServico == null)
                 return NotFound("Serviço não encontrado.");
 
             var servico = _mapper.Map<Servico>(servicoPostDTO);
-            var servicoAtualizado = await _uof.ServicoRepository.UpdateAsync(servico);
-            _uof.Commit();
+            var servicoAtualizado = await _uow.ServicoRepository.UpdateAsync(servico);
+            _uow.Commit();
 
             var servicoAtualizadoDTO = _mapper.Map<ServicoPostDTO>(servicoAtualizado);
             return Ok(servicoAtualizadoDTO);
@@ -88,13 +90,13 @@ namespace API.Controllers
         [HttpDelete("{id:int}")]
         public async Task<ActionResult<ServicoGetDTO>> Delete(int id)
         {
-            var servico = await _uof.ServicoRepository.GetbyIdWithFornecedoresAsync(id);
+            var servico = await _uow.ServicoRepository.GetbyIdWithFornecedoresAsync(id);
             if (servico is null)
             {
                 return NotFound("Serviço não encontrado");
             }
-            var servicoDeletado = await _uof.ServicoRepository.DeleteAsync(servico);
-            _uof.Commit();
+            var servicoDeletado = await _uow.ServicoRepository.DeleteAsync(servico);
+            _uow.Commit();
 
             var servicoDeletadoDTO = _mapper.Map<ServicoGetDTO>(servicoDeletado);
 
