@@ -31,7 +31,7 @@ namespace Api.Controllers
         if (usuario == null)
             return Unauthorized();
 
-        var token = _tokenService.GenerateToken(usuario.Email);
+        var token = _tokenService.GenerateToken(usuario.Email, usuario.Role, usuario.Id, usuario.Nome);
 
         return Ok(new { Token = token });
 

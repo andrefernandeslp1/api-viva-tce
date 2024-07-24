@@ -14,7 +14,7 @@ public class TokenService : ITokenService
         _config = Configuration;
     }
 
-    public string GenerateToken(string email)
+    public string GenerateToken(string email, string role, int id, string nome)
 {
     var tokenHandler = new JwtSecurityTokenHandler();
     var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
@@ -22,6 +22,9 @@ public class TokenService : ITokenService
     var claims = new List<Claim>
     {
         new Claim(ClaimTypes.Email, email),
+        new Claim(ClaimTypes.Role, role),
+        new Claim("UserId", id.ToString()),
+        new Claim(ClaimTypes.Name, nome)
     };
 
     var tokenDescriptor = new SecurityTokenDescriptor
@@ -29,8 +32,8 @@ public class TokenService : ITokenService
         Subject = new ClaimsIdentity(claims),
         Expires = DateTime.UtcNow.AddHours(1),
         SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
-        Audience = _config["Jwt:Audience"], // Adicione esta linha
-        Issuer = _config["Jwt:Issuer"] // Opcional: também é recomendável definir o emissor
+        Audience = _config["Jwt:Audience"],
+        Issuer = _config["Jwt:Issuer"] 
     };
 
     var token = tokenHandler.CreateToken(tokenDescriptor);
