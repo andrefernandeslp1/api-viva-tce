@@ -1,6 +1,8 @@
+using System.Security.Claims;
 using System.Text;
 using API.Context;
 using API.DTOs.Mappings;
+using API.Models;
 using API.Repositories;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
@@ -44,7 +46,11 @@ options.TokenValidationParameters = new TokenValidationParameters
     };
 });
 
-builder.Services.AddAuthorization();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("VendedorPolicy", policy => policy.RequireRole("Admin", "Vendedor"));
+});
 
 builder.Services.AddSwaggerGen(c =>
 {
