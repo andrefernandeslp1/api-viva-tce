@@ -137,3 +137,7 @@ C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\runtime
 C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\AutoMapper.dll
 C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\appsettings.json
+C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\Microsoft.AspNetCore.JsonPatch.dll
+C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\Microsoft.AspNetCore.Mvc.NewtonsoftJson.dll
+C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\Newtonsoft.Json.dll
+C:\Users\felip\Documents\Github\portal-servicos-tce\api\bin\Debug\net8.0\Newtonsoft.Json.Bson.dll

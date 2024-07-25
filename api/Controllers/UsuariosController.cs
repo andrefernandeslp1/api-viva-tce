@@ -100,6 +100,40 @@ namespace API.Controllers
             return Ok(usuarioDeletadoDto);
         }
 
+        [HttpGet("pagination")]
+        public ActionResult<List<UsuarioDTO>> Get([FromQuery] PaginationParameters paginationParameters)
+        {
+            var usuarios = _uow.UsuarioRepository.GetUsuariosPaginados(paginationParameters);
+
+            var usuarioDTOs = _mapper.Map<List<UsuarioDTO>>(usuarios);
+            return Ok(usuarioDTOs);
+        }
+
+        [HttpGet("filter/nome/pagination")]
+        public ActionResult<IEnumerable<UsuarioDTO>> GetUsuariosFilterNome([FromQuery] NomeFilter nomeFilter)
+        {
+            var usuarios = _uow.UsuarioRepository.GetUsuariosFiltroNome(nomeFilter);
+            return ObterServicos(usuarios);
+        }
+
+        private ActionResult<IEnumerable<UsuarioDTO>> ObterServicos(PagedList<Usuario> usuarios)
+        {
+            var metadata = new
+        {
+            usuarios.TotalCount,
+            usuarios.PageSize,
+            usuarios.CurrentPage,
+            usuarios.TotalPages,
+            usuarios.HasNext,
+            usuarios.HasPrevious
+        };
+        
+
+            var usuarioDTOs = _mapper.Map<IEnumerable<UsuarioDTO>>(usuarios);
+            return Ok(usuarioDTOs);
+
+        }
+
 
 
     }

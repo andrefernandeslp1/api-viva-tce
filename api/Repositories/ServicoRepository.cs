@@ -25,4 +25,21 @@ public class ServicoRepository : RepositoryAsync<Servico>, IServicoRepository
         return await _context.Servicos.Where(f => f.FornecedorId == id).ToListAsync();
     }
 
+    public PagedList<Servico> GetServicosPaginados(PaginationParameters paginationParameters)
+    {
+       var servicos = _context.Servicos.OrderBy(p => p.Id).AsQueryable();
+       var servicosOrdenados = PagedList<Servico>.ToPagedList(servicos, paginationParameters.PageNumber, paginationParameters.PageSize);
+       return servicosOrdenados;
+    }
+
+    public PagedList<Servico> GetUsuariosFiltroNome(NomeFilter nomeFilter)
+    {
+        var servicos = _context.Servicos.AsQueryable();
+        servicos = servicos.Where(p => p.Nome.ToUpper().Contains( nomeFilter.nome.ToUpper()));
+
+        var usuariosFiltrados = PagedList<Servico>.ToPagedList(servicos,  nomeFilter.PageNumber,  nomeFilter.PageSize);
+
+        return usuariosFiltrados;
+    }
 }
+
