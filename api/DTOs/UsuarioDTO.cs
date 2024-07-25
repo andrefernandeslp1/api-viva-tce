@@ -24,7 +24,9 @@ public class UsuarioDTO
     public string Telefone { get; set; }
     
     [Required]
-    public string Role {get; set;}
+    public string Role { get; set;}
+
+    // public int? FornecedorId { get; set; }
 
 
 }

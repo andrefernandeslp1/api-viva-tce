@@ -48,8 +48,8 @@ options.TokenValidationParameters = new TokenValidationParameters
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("Admin"));
-    options.AddPolicy("VendedorPolicy", policy => policy.RequireRole("Admin", "Vendedor"));
+    options.AddPolicy("AdminPolicy", policy => policy.RequireRole("admin"));
+    options.AddPolicy("VendedorPolicy", policy => policy.RequireRole("admin", "vendedor"));
 });
 
 builder.Services.AddSwaggerGen(c =>

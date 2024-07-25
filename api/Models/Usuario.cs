@@ -29,5 +29,9 @@ public class Usuario
     [StringLength(10)]
     public string Role { get; set; }
 
+    // [ForeignKey("FornecedorId")]
+    // public int? FornecedorId { get; set; }
+    // public Fornecedor fornecedor {get; set; }
+
 
 }
