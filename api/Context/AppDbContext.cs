@@ -11,6 +11,6 @@ public class AppDbContext : DbContext
     public DbSet<Fornecedor>? Fornecedores { get; set; }
     public DbSet<Servico>? Servicos { get; set; }
     public DbSet<Usuario>? Usuarios { get; set; }
-    public DbSet<ServicoUsuario> ServicosUsuarios {get; set;}
+    public DbSet<ServicoUsuario>? ServicosUsuarios {get; set;}
 
 }
