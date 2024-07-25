@@ -1,12 +1,9 @@
-using API.Context;
-using API.DTOs;
+
 using API.Models;
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
-using Newtonsoft.Json;
 
 namespace API.Controllers
 {
@@ -24,7 +21,6 @@ namespace API.Controllers
         }
         
         [HttpGet]
-        [Authorize]
         public async Task<ActionResult<List<ServicoGetDTO>>> Get()
         {
             var servicos = await _uow.ServicoRepository.GetAllWithFornecedoresAsync();
@@ -128,13 +124,13 @@ namespace API.Controllers
         }
 
         [HttpGet("filter/nome/pagination")]
-        public ActionResult<IEnumerable<UsuarioDTO>> GetUsuariosFilterNome([FromQuery] NomeFilter nomeFilter)
+        public ActionResult<IEnumerable<ServicoGetDTO>> GetServicosFilterNome([FromQuery] NomeFilter nomeFilter)
         {
-            var servicos = _uow.ServicoRepository.GetUsuariosFiltroNome(nomeFilter);
+            var servicos = _uow.ServicoRepository.GetServicosFiltroNome(nomeFilter);
             return ObterServicos(servicos);
         }
 
-        private ActionResult<IEnumerable<UsuarioDTO>> ObterServicos(PagedList<Servico> servicos)
+        private ActionResult<IEnumerable<ServicoGetDTO>> ObterServicos(PagedList<Servico> servicos)
         {
             var metadata = new
         {
@@ -146,7 +142,6 @@ namespace API.Controllers
             servicos.HasPrevious
         };
         
-
             var servicoDTO = _mapper.Map<IEnumerable<ServicoGetDTO>>(servicos);
             return Ok(servicoDTO);
 
