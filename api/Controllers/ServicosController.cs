@@ -6,6 +6,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Newtonsoft.Json;
 
 namespace API.Controllers
 {
@@ -125,6 +126,33 @@ namespace API.Controllers
             var servicosDTO = _mapper.Map<List<ServicoGetDTO>>(servicos);
             return Ok(servicosDTO);
         }
+
+        [HttpGet("filter/nome/pagination")]
+        public ActionResult<IEnumerable<UsuarioDTO>> GetUsuariosFilterNome([FromQuery] NomeFilter nomeFilter)
+        {
+            var servicos = _uow.ServicoRepository.GetUsuariosFiltroNome(nomeFilter);
+            return ObterServicos(servicos);
+        }
+
+        private ActionResult<IEnumerable<UsuarioDTO>> ObterServicos(PagedList<Servico> servicos)
+        {
+            var metadata = new
+        {
+            servicos.TotalCount,
+            servicos.PageSize,
+            servicos.CurrentPage,
+            servicos.TotalPages,
+            servicos.HasNext,
+            servicos.HasPrevious
+        };
+        
+
+            var servicoDTO = _mapper.Map<IEnumerable<ServicoGetDTO>>(servicos);
+            return Ok(servicoDTO);
+
+        }
+
+
 
 
 

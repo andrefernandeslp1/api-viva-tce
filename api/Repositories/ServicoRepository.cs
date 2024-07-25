@@ -32,4 +32,14 @@ public class ServicoRepository : RepositoryAsync<Servico>, IServicoRepository
        return servicosOrdenados;
     }
 
+    public PagedList<Servico> GetUsuariosFiltroNome(NomeFilter nomeFilter)
+    {
+        var servicos = _context.Servicos.AsQueryable();
+        servicos = servicos.Where(p => p.Nome.ToUpper().Contains( nomeFilter.nome.ToUpper()));
+
+        var usuariosFiltrados = PagedList<Servico>.ToPagedList(servicos,  nomeFilter.PageNumber,  nomeFilter.PageSize);
+
+        return usuariosFiltrados;
+    }
 }
+
