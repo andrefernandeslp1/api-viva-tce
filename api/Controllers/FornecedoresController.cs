@@ -102,6 +102,40 @@ namespace API.Controllers
             return Ok(fornecedorDeletadoDTO);
         }
 
+        [HttpGet("pagination")]
+        public ActionResult<List<FornecedorDTO>> Get([FromQuery] PaginationParameters paginationParameters)
+        {
+            var fornecedores = _uow.FornecedorRepository.GetFornecedoresPaginados(paginationParameters);
+
+            var fornecedorDTOs = _mapper.Map<List<FornecedorDTO>>(fornecedores);
+            return Ok(fornecedorDTOs);
+        }
+
+        [HttpGet("filter/nome/pagination")]
+        public ActionResult<IEnumerable<FornecedorDTO>> GetUsuariosFilterNome([FromQuery] NomeFilter nomeFilter)
+        {
+            var fornecedores = _uow.FornecedorRepository.GetFornecedoresFiltroNome(nomeFilter);
+            return ObterServicos(fornecedores);
+        }
+
+        private ActionResult<IEnumerable<FornecedorDTO>> ObterServicos(PagedList<Fornecedor> fornecedores)
+        {
+            var metadata = new
+        {
+            fornecedores.TotalCount,
+            fornecedores.PageSize,
+            fornecedores.CurrentPage,
+            fornecedores.TotalPages,
+            fornecedores.HasNext,
+            fornecedores.HasPrevious
+        };
+        
+
+            var fornecedorDTOs = _mapper.Map<IEnumerable<FornecedorDTO>>(fornecedores);
+            return Ok(fornecedorDTOs);
+
+        }
+
 
 
      }
