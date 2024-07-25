@@ -101,9 +101,19 @@ namespace API.Controllers
             return Ok(servicoUsuarioDeletadoDTO);
         }
 
-        
+        [HttpGet("compras/{id:int}")]
+        public async Task<ActionResult<List<ServicoUsuarioGetDTO>>> GetCompras(int id)
+        {
+            var servicosUsuarios = await _uow.ServicoUsuarioRepository.GetComprasByUser(id);
+            if (servicosUsuarios is null)
+                return NotFound();
 
-    
+            var servicoUsuariosDTO = _mapper.Map<List<ServicoUsuarioGetDTO>>(servicosUsuarios);
+            return servicoUsuariosDTO;
+
+        }
+
+
         
      }
 }
