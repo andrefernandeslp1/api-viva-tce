@@ -117,6 +117,15 @@ namespace API.Controllers
             
         }
 
+        [HttpGet("pagination")]
+        public ActionResult<List<ServicoGetDTO>> Get([FromQuery] PaginationParameters paginationParameters)
+        {
+            var servicos = _uow.ServicoRepository.GetServicosPaginados(paginationParameters);
+
+            var servicosDTO = _mapper.Map<List<ServicoGetDTO>>(servicos);
+            return Ok(servicosDTO);
+        }
+
 
 
 
