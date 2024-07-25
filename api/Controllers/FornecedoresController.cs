@@ -1,11 +1,10 @@
-using API.Context;
+
 using API.DTOs;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; 
 
 namespace API.Controllers
 {    
@@ -22,7 +21,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        [Authorize(Roles = "Admin")]
+        // [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<FornecedorDTO>>> Get()
         {
             var fornecedor = await _uow.FornecedorRepository.GetAllAsync();
@@ -35,7 +34,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        [Authorize]
+        // [Authorize]
         public async Task<ActionResult<FornecedorDTO>> Get(int id)
         {
             var fornecedor = await _uow.FornecedorRepository.GetAsync(p => p.Id == id);
@@ -92,7 +91,7 @@ namespace API.Controllers
         {
             var fornecedor = await _uow.FornecedorRepository.GetAsync(p => p.Id == id);
             if (fornecedor is null)
-                return NotFound("Usuário não encontrado");
+                return NotFound("Fornecedor não encontrado");
                 
             var fornecedorDeletado = await _uow.FornecedorRepository.DeleteAsync(fornecedor);
             _uow.Commit();
@@ -112,7 +111,7 @@ namespace API.Controllers
         }
 
         [HttpGet("filter/nome/pagination")]
-        public ActionResult<IEnumerable<FornecedorDTO>> GetUsuariosFilterNome([FromQuery] NomeFilter nomeFilter)
+        public ActionResult<IEnumerable<FornecedorDTO>> GetFornecedoresFilterNome([FromQuery] NomeFilter nomeFilter)
         {
             var fornecedores = _uow.FornecedorRepository.GetFornecedoresFiltroNome(nomeFilter);
             return ObterServicos(fornecedores);

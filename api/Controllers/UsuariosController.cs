@@ -1,10 +1,8 @@
-using API.Context;
 using API.DTOs;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore; 
 
 namespace API.Controllers
 {
