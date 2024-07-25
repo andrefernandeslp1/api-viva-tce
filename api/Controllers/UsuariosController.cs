@@ -2,6 +2,7 @@ using API.DTOs;
 using API.Models;
 using API.Repositories;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -20,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UsuarioDTO>>> Get()
+        [Authorize(Policy = "AdminPolicy")]        public async Task<ActionResult<List<UsuarioDTO>>> Get()
         {
             var usuarios = await _uow.UsuarioRepository.GetAllAsync();
             if (usuarios is null)
@@ -32,6 +33,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<UsuarioDTO>> Get(int id)
         {
             var usuario = await _uow.UsuarioRepository.GetAsync(user => user.Id == id);
@@ -60,6 +62,7 @@ namespace API.Controllers
         }
         
         [HttpPut("{id:int}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<UsuarioDTO>> Put (int id, UsuarioDTO usuarioDTO)
         {
             if (usuarioDTO == null)
@@ -83,6 +86,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<UsuarioDTO>> Delete(int id)
         {
             var usuario = await _uow.UsuarioRepository.GetAsync(user => user.Id == id);
