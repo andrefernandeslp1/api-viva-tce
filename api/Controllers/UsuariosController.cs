@@ -57,6 +57,12 @@ namespace API.Controllers
                 return BadRequest();
             }
 
+            var existingUser = await _uow.UsuarioRepository.GetAsync(u => u.Email == usuarioDTO.Email);
+            if (existingUser != null)
+            {
+                return Conflict("E-mail já cadastrado.");
+            }
+
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
             var novoUsuario = await _uow.UsuarioRepository.CreateAsync(usuario);
             _uow.Commit();

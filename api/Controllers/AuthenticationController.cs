@@ -40,6 +40,7 @@ namespace Api.Controllers
         [HttpPost, Route("cadastrar")]
         public async Task<ActionResult<UsuarioPostDTO>> Cadastrar(UsuarioPostDTO usuarioDTO)
         {
+
             if (usuarioDTO is null){
                 return BadRequest();
             }
@@ -47,6 +48,12 @@ namespace Api.Controllers
             if(!usuarioDTO.Role.Equals("cliente"))
             {
                 return Unauthorized();
+            }
+
+            var existingUser = await _uow.UsuarioRepository.GetAsync(u => u.Email == usuarioDTO.Email);
+            if (existingUser != null)
+            {
+                return Conflict("E-mail já cadastrado.");
             }
 
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
