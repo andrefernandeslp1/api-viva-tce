@@ -1,5 +1,6 @@
 using API.Context;
 using API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace API.Repositories;
 
@@ -27,4 +28,8 @@ public class UsuarioRepository : RepositoryAsync<Usuario>, IUsuarioRepository
         return usuariosFiltrados;
     }
 
+    public async Task<IEnumerable<Usuario>> GetAllWithFornecedoresAsync()
+    {
+        return await _context.Usuarios.Include(u => u.Fornecedor).ToListAsync();
+    }
 }

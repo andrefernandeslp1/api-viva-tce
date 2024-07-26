@@ -1,21 +1,16 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using API.Models;
 
-namespace API.Models;
+namespace API.DTOs;
 
-[Table("Usuarios")]
-public class Usuario
+public class UsuarioGetDTO
 {
-    [Key]
     public int Id { get; set; }
     
     [Required]
     [StringLength(100)]
     public string Nome { get; set; }
-    
-    [Required]
-    [StringLength(100)]
-    public string Senha { get; set; }
     
     [Required]
     [StringLength(100)]
@@ -26,12 +21,11 @@ public class Usuario
     public string Telefone { get; set; }
     
     [Required]
-    [StringLength(10)]
-    public string Role { get; set; }
+    public string Role { get; set;}
 
-    [ForeignKey("FornecedorId")]
-    public int? FornecedorId { get; set; }
-    public Fornecedor? Fornecedor {get; set; }
+    public int? IdFornecedor { get; set; }
+
+    public Fornecedor? Fornecedor { get; set; }
 
 
 }

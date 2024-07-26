@@ -1,6 +1,7 @@
 using API.Models;
 using API.Repositories;
 using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -19,6 +20,7 @@ namespace API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<ServicoUsuarioGetDTO>>> Get()
         {
             var servicosUsuarios = await _uow.ServicoUsuarioRepository.GetAllWithDataAsync();
@@ -31,6 +33,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<ServicoUsuarioGetDTO>> Get(int id)
         {
             var servicoUsuario = await _uow.ServicoUsuarioRepository.GetByIdWithDataAsync(id);
@@ -43,6 +46,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<ServicoUsuarioPostDTO>> Post(ServicoUsuarioPostDTO servicoUsuarioDTO)
         {
             if (servicoUsuarioDTO is null)
@@ -61,6 +65,7 @@ namespace API.Controllers
 
         
         [HttpPut("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<ServicoUsuarioPostDTO>> Put (int id, ServicoUsuarioPostDTO servicoUsuarioPostDTO)
         {
             if (servicoUsuarioPostDTO == null)
@@ -83,6 +88,7 @@ namespace API.Controllers
         }
 
         [HttpDelete("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<ServicoUsuarioGetDTO>> Delete(int id)
         {
             var servicoUsuario = await _uow.ServicoUsuarioRepository.GetByIdWithDataAsync(id);
@@ -98,7 +104,8 @@ namespace API.Controllers
             return Ok(servicoUsuarioDeletadoDTO);
         }
 
-        [HttpGet("compras/{id:int}")]
+        [HttpGet("usuario/{id:int}")]
+        [Authorize]
         public async Task<ActionResult<List<ServicoUsuarioGetDTO>>> GetCompras(int id)
         {
             var servicosUsuarios = await _uow.ServicoUsuarioRepository.GetComprasByUser(id);

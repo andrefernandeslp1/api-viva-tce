@@ -21,6 +21,7 @@ namespace API.Controllers
         }
         
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<ServicoGetDTO>>> Get()
         {
             var servicos = await _uow.ServicoRepository.GetAllWithFornecedoresAsync();
@@ -33,6 +34,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
+        [Authorize]
         public async Task<ActionResult<ServicoGetDTO>> Get(int id)
         {
             var servico = await _uow.ServicoRepository.GetbyIdWithFornecedoresAsync(id);
@@ -45,6 +47,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "VendedorPolicy")]
         public async Task<ActionResult<ServicoPostDTO>> Post(ServicoPostDTO servicoDTO)
         {
             if (servicoDTO is null)
@@ -62,6 +65,7 @@ namespace API.Controllers
         }
 
         [HttpPut("{id:int}")]
+        [Authorize(Policy = "VendedorPolicy")]
         public async Task<ActionResult<ServicoPostDTO>> Put (int id, ServicoPostDTO servicoPostDTO)
         {
             if (servicoPostDTO == null)
@@ -85,6 +89,7 @@ namespace API.Controllers
 
         
         [HttpDelete("{id:int}")]
+        [Authorize(Policy = "VendedorPolicy")]
         public async Task<ActionResult<ServicoGetDTO>> Delete(int id)
         {
             var servico = await _uow.ServicoRepository.GetbyIdWithFornecedoresAsync(id);
@@ -101,6 +106,7 @@ namespace API.Controllers
         }
 
         [HttpGet("fornecedor/{id:int}")]
+        [Authorize]
         public async Task<ActionResult<List<ServicoGetDTO>>> GetServicosPorFornecedor (int id)
         {
             var servico = await _uow.ServicoRepository.GetServicosByFornecedorId(id);
@@ -115,6 +121,7 @@ namespace API.Controllers
         }
 
         [HttpGet("pagination")]
+        [Authorize]
         public ActionResult<List<ServicoGetDTO>> Get([FromQuery] PaginationParameters paginationParameters)
         {
             var servicos = _uow.ServicoRepository.GetServicosPaginados(paginationParameters);
@@ -124,6 +131,7 @@ namespace API.Controllers
         }
 
         [HttpGet("filter/nome/pagination")]
+        [Authorize]
         public ActionResult<IEnumerable<ServicoGetDTO>> GetServicosFilterNome([FromQuery] NomeFilter nomeFilter)
         {
             var servicos = _uow.ServicoRepository.GetServicosFiltroNome(nomeFilter);

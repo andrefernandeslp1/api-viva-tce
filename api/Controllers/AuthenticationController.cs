@@ -1,5 +1,8 @@
 
+using API.DTOs;
+using API.Models;
 using API.Repositories;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 namespace Api.Controllers
 {
@@ -9,10 +12,14 @@ namespace Api.Controllers
     {
         private readonly TokenService _tokenService;
         private readonly IUnitOfWork _uow;
-        public AuthenticationController(TokenService tokenService, IUnitOfWork uow)
+
+        private readonly IMapper _mapper;
+
+        public AuthenticationController(TokenService tokenService, IUnitOfWork uow, IMapper mapper)
         {
             _tokenService = tokenService;
             _uow = uow;
+            _mapper = mapper;
         }
 
         [HttpPost, Route("login")]
@@ -27,6 +34,28 @@ namespace Api.Controllers
 
         return Ok(new { Token = token });
 
+
+        }
+
+        [HttpPost, Route("cadastrar")]
+        public async Task<ActionResult<UsuarioPostDTO>> Cadastrar(UsuarioPostDTO usuarioDTO)
+        {
+            if (usuarioDTO is null){
+                return BadRequest();
+            }
+
+            if(!usuarioDTO.Role.Equals("cliente"))
+            {
+                return Unauthorized();
+            }
+
+            var usuario = _mapper.Map<Usuario>(usuarioDTO);
+
+            var novoUsuario = await _uow.UsuarioRepository.CreateAsync(usuario);
+            _uow.Commit();
+
+            var novoUsuarioDTO = _mapper.Map<UsuarioPostDTO>(novoUsuario);
+            return Ok(novoUsuarioDTO);
 
         }
       

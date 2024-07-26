@@ -7,7 +7,8 @@ public class ApiDTOMappingProfile : Profile
 {
     public ApiDTOMappingProfile()
     {
-        CreateMap<Usuario, UsuarioDTO>().ReverseMap();
+        CreateMap<Usuario, UsuarioGetDTO>().ReverseMap();
+        CreateMap<Usuario, UsuarioPostDTO>().ReverseMap();
         CreateMap<Fornecedor, FornecedorDTO>().ReverseMap();  
         CreateMap<Servico, ServicoGetDTO>().ReverseMap();
         CreateMap<Servico, ServicoPostDTO>().ReverseMap();

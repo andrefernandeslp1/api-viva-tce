@@ -12,12 +12,12 @@ public class ServicoRepository : RepositoryAsync<Servico>, IServicoRepository
 
      public async Task<IEnumerable<Servico>> GetAllWithFornecedoresAsync()
     {
-        return await _context.Servicos.Include(s => s.fornecedor).ToListAsync();
+        return await _context.Servicos.Include(s => s.Fornecedor).ToListAsync();
     }
 
     public async Task<Servico> GetbyIdWithFornecedoresAsync(int id)
     {
-        return await _context.Servicos.Include(s => s.fornecedor).FirstOrDefaultAsync(s => s.Id == id);
+        return await _context.Servicos.Include(s => s.Fornecedor).FirstOrDefaultAsync(s => s.Id == id);
     }
 
     public async Task<List<Servico>> GetServicosByFornecedorId(int id)

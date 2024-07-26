@@ -21,32 +21,37 @@ namespace API.Controllers
         }
 
         [HttpGet]
-        [Authorize(Policy = "AdminPolicy")]        public async Task<ActionResult<List<UsuarioDTO>>> Get()
+        [Authorize(Policy = "AdminPolicy")]        
+        public async Task<ActionResult<List<UsuarioGetDTO>>> Get()
         {
-            var usuarios = await _uow.UsuarioRepository.GetAllAsync();
+            var usuarios = await _uow.UsuarioRepository.GetAllWithFornecedoresAsync();
             if (usuarios is null)
             {
                 return NotFound();
             }
-            var usuariosDTO = _mapper.Map<List<UsuarioDTO>>(usuarios);
+            var usuariosDTO = _mapper.Map<List<UsuarioGetDTO>>(usuarios);
             return Ok(usuariosDTO);
         }
 
         [HttpGet("{id:int}")]
-        [Authorize(Policy = "AdminPolicy")]
-        public async Task<ActionResult<UsuarioDTO>> Get(int id)
+        [Authorize]    
+        public async Task<ActionResult<UsuarioGetDTO>> Get(int id)
         {
+
+
+
             var usuario = await _uow.UsuarioRepository.GetAsync(user => user.Id == id);
             if (usuario is null)
             {
                 return NotFound();
             }
-            var usuarioDTO = _mapper.Map<UsuarioDTO>(usuario);
+            var usuarioDTO = _mapper.Map<UsuarioGetDTO>(usuario);
             return Ok(usuarioDTO);
         }
 
         [HttpPost]
-        public async Task<ActionResult<UsuarioDTO>> Post(UsuarioDTO usuarioDTO)
+        [Authorize(Policy = "AdminPolicy")]
+        public async Task<ActionResult<UsuarioPostDTO>> Post(UsuarioPostDTO usuarioDTO)
         {
             if (usuarioDTO is null){
                 return BadRequest();
@@ -56,14 +61,14 @@ namespace API.Controllers
             var novoUsuario = await _uow.UsuarioRepository.CreateAsync(usuario);
             _uow.Commit();
 
-            var novoUsuarioDTO = _mapper.Map<UsuarioDTO>(novoUsuario);
+            var novoUsuarioDTO = _mapper.Map<UsuarioPostDTO>(novoUsuario);
             return Ok(novoUsuarioDTO);
 
         }
         
         [HttpPut("{id:int}")]
-        [Authorize(Policy = "AdminPolicy")]
-        public async Task<ActionResult<UsuarioDTO>> Put (int id, UsuarioDTO usuarioDTO)
+        [Authorize]
+        public async Task<ActionResult<UsuarioPostDTO>> Put (int id, UsuarioPostDTO usuarioDTO)
         {
             if (usuarioDTO == null)
                 return BadRequest("O corpo da requisição não pode ser nulo.");
@@ -80,14 +85,14 @@ namespace API.Controllers
             var usuarioAtualizado = await _uow.UsuarioRepository.UpdateAsync(usuario);
             _uow.Commit();
 
-            var usuarioAtualizadoDTO = _mapper.Map<UsuarioDTO>(usuarioAtualizado);
+            var usuarioAtualizadoDTO = _mapper.Map<UsuarioPostDTO>(usuarioAtualizado);
 
             return Ok(usuarioAtualizadoDTO);
         }
 
         [HttpDelete("{id:int}")]
         [Authorize(Policy = "AdminPolicy")]
-        public async Task<ActionResult<UsuarioDTO>> Delete(int id)
+        public async Task<ActionResult<UsuarioGetDTO>> Delete(int id)
         {
             var usuario = await _uow.UsuarioRepository.GetAsync(user => user.Id == id);
             if (usuario is null)
@@ -97,28 +102,30 @@ namespace API.Controllers
             var usuarioDeletado = await _uow.UsuarioRepository.DeleteAsync(usuario);
             _uow.Commit();
 
-            var usuarioDeletadoDto = _mapper.Map<UsuarioDTO>(usuarioDeletado);
+            var usuarioDeletadoDto = _mapper.Map<UsuarioGetDTO>(usuarioDeletado);
 
             return Ok(usuarioDeletadoDto);
         }
 
         [HttpGet("pagination")]
-        public ActionResult<List<UsuarioDTO>> Get([FromQuery] PaginationParameters paginationParameters)
+        [Authorize(Policy = "AdminPolicy")]
+        public ActionResult<List<UsuarioGetDTO>> Get([FromQuery] PaginationParameters paginationParameters)
         {
             var usuarios = _uow.UsuarioRepository.GetUsuariosPaginados(paginationParameters);
 
-            var usuarioDTOs = _mapper.Map<List<UsuarioDTO>>(usuarios);
+            var usuarioDTOs = _mapper.Map<List<UsuarioGetDTO>>(usuarios);
             return Ok(usuarioDTOs);
         }
 
         [HttpGet("filter/nome/pagination")]
-        public ActionResult<IEnumerable<UsuarioDTO>> GetUsuariosFilterNome([FromQuery] NomeFilter nomeFilter)
+        [Authorize(Policy = "AdminPolicy")]
+        public ActionResult<IEnumerable<UsuarioGetDTO>> GetUsuariosFilterNome([FromQuery] NomeFilter nomeFilter)
         {
             var usuarios = _uow.UsuarioRepository.GetUsuariosFiltroNome(nomeFilter);
             return ObterServicos(usuarios);
         }
 
-        private ActionResult<IEnumerable<UsuarioDTO>> ObterServicos(PagedList<Usuario> usuarios)
+        private ActionResult<IEnumerable<UsuarioGetDTO>> ObterServicos(PagedList<Usuario> usuarios)
         {
             var metadata = new
         {
@@ -131,7 +138,7 @@ namespace API.Controllers
         };
         
 
-            var usuarioDTOs = _mapper.Map<IEnumerable<UsuarioDTO>>(usuarios);
+            var usuarioDTOs = _mapper.Map<IEnumerable<UsuarioGetDTO>>(usuarios);
             return Ok(usuarioDTOs);
 
         }

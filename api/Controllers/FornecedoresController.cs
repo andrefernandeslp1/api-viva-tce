@@ -21,7 +21,7 @@ namespace API.Controllers
             _mapper = mapper;
         }
         [HttpGet]
-        // [Authorize(Roles = "Admin")]
+        [Authorize]
         public async Task<ActionResult<List<FornecedorDTO>>> Get()
         {
             var fornecedor = await _uow.FornecedorRepository.GetAllAsync();
@@ -34,7 +34,7 @@ namespace API.Controllers
         }
 
         [HttpGet("{id:int}")]
-        // [Authorize]
+        [Authorize]
         public async Task<ActionResult<FornecedorDTO>> Get(int id)
         {
             var fornecedor = await _uow.FornecedorRepository.GetAsync(p => p.Id == id);
@@ -47,6 +47,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<FornecedorDTO>> Post(FornecedorDTO fornecedorDTO)
         {
             if (fornecedorDTO is null)
@@ -62,7 +63,10 @@ namespace API.Controllers
             return Ok(novoFornecedorDTO);
 
         }
+
+
         [HttpPut("{id:int}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<FornecedorDTO>> Put (int id, FornecedorDTO fornecedorDTO)
         {
 
@@ -87,6 +91,7 @@ namespace API.Controllers
         }
         
         [HttpDelete("{id:int}")]
+        [Authorize(Policy = "AdminPolicy")]
         public async Task<ActionResult<FornecedorDTO>> Delete(int id)
         {
             var fornecedor = await _uow.FornecedorRepository.GetAsync(p => p.Id == id);
@@ -102,6 +107,7 @@ namespace API.Controllers
         }
 
         [HttpGet("pagination")]
+        [Authorize]
         public ActionResult<List<FornecedorDTO>> Get([FromQuery] PaginationParameters paginationParameters)
         {
             var fornecedores = _uow.FornecedorRepository.GetFornecedoresPaginados(paginationParameters);
@@ -111,6 +117,7 @@ namespace API.Controllers
         }
 
         [HttpGet("filter/nome/pagination")]
+        [Authorize]
         public ActionResult<IEnumerable<FornecedorDTO>> GetFornecedoresFilterNome([FromQuery] NomeFilter nomeFilter)
         {
             var fornecedores = _uow.FornecedorRepository.GetFornecedoresFiltroNome(nomeFilter);

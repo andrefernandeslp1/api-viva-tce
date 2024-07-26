@@ -19,6 +19,6 @@ public class ServicoGetDTO
 
     public int FornecedorId {get; set;}
 
-    public Fornecedor fornecedor {get; set;}
+    public Fornecedor Fornecedor {get; set;}
 
 }
