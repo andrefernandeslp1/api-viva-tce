@@ -30,7 +30,7 @@ namespace Api.Controllers
         if (usuario == null)
             return BadRequest("E-mail ou senha inválidos.");
 
-        var token = _tokenService.GenerateToken(usuario.Email, usuario.Role, usuario.Id, usuario.Nome);
+        var token = _tokenService.GenerateToken(usuario);
 
         return Ok(new { Token = token });
 

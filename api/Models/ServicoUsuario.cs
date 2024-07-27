@@ -12,12 +12,12 @@ public class ServicoUsuario
     [ForeignKey("ServicoId")]
     public int ServicoId { get; set; }
 
-    public Servico Servico {get; set;}
+    public Servico? Servico {get; set;}
     
     [ForeignKey("UsuarioId")]
     public int UsuarioId { get; set; }
 
-    public Usuario Usuario {get; set;}
+    public Usuario? Usuario {get; set;}
     
     [Required]
     public DateTime Data { get; set; }

@@ -1,6 +1,7 @@
 using System;
+using API.Models;
 
 public interface ITokenService
 {
-    string GenerateToken(string email, string role, int id, string nome);
+    string GenerateToken(Usuario usuario);
 }

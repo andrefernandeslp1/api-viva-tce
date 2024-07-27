@@ -4,6 +4,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
+using API.Models;
 
 public class TokenService : ITokenService
 {
@@ -14,18 +15,21 @@ public class TokenService : ITokenService
         _config = Configuration;
     }
 
-    public string GenerateToken(string email, string role, int id, string nome)
+    public string GenerateToken(Usuario usuario)
 {
     var tokenHandler = new JwtSecurityTokenHandler();
     var key = Encoding.ASCII.GetBytes(_config["Jwt:Key"]);
 
     var claims = new List<Claim>
     {
-        new Claim(ClaimTypes.Email, email),
-        new Claim(ClaimTypes.Role, role),
-        new Claim("id", id.ToString()),
-        new Claim("nome", nome)
+        new Claim(ClaimTypes.Email, usuario.Email),
+        new Claim(ClaimTypes.Role, usuario.Role),
+        new Claim("id", usuario.Id.ToString()),
+        new Claim("nome", usuario.Nome)
     };
+
+    if(usuario.FornecedorId is not null)
+        claims.Add(new Claim("fornecedorId", usuario.FornecedorId.ToString()));
 
     var tokenDescriptor = new SecurityTokenDescriptor
     {
