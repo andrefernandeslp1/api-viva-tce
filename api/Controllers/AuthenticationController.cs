@@ -28,7 +28,7 @@ namespace Api.Controllers
             var usuario = await _uow.UsuarioRepository.GetAsync(u => u.Email == request.Email && u.Senha == request.Senha);
 
         if (usuario == null)
-            return Unauthorized();
+            return BadRequest("E-mail ou senha inválidos.");
 
         var token = _tokenService.GenerateToken(usuario.Email, usuario.Role, usuario.Id, usuario.Nome);
 

@@ -23,8 +23,8 @@ public class TokenService : ITokenService
     {
         new Claim(ClaimTypes.Email, email),
         new Claim(ClaimTypes.Role, role),
-        new Claim("UserId", id.ToString()),
-        new Claim(ClaimTypes.Name, nome)
+        new Claim("id", id.ToString()),
+        new Claim("nome", nome)
     };
 
     var tokenDescriptor = new SecurityTokenDescriptor
