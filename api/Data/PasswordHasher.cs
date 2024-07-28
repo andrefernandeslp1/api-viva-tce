@@ -1,30 +1,31 @@
+using System;
 using System.Security.Cryptography;
-using Microsoft.AspNetCore.Identity;
+using System.Text;
 
 public class PasswordHasher : IPasswordHasher
 {
-    private const int SaltSize = 128 / 8;
-    private const int KeySize = 256 / 8;
-    private const int Iterations = 1000;
-    private static readonly HashAlgorithmName _hashAlgorithmName = HashAlgorithmName.SHA256;
-    private const char Delimiter = ';';
-
-
     public string Hash(string password)
     {
-        var salt = RandomNumberGenerator.GetBytes(SaltSize);
-        var hash = Rfc2898DeriveBytes.Pbkdf2(password, salt, Iterations, _hashAlgorithmName, KeySize);
+        // Cria uma instância do SHA256
+        using (SHA256 sha256Hash = SHA256.Create())
+        {
+            // Converte a senha para bytes e calcula o hash
+            byte[] bytes = sha256Hash.ComputeHash(Encoding.UTF8.GetBytes(password));
 
-        return string.Join(Delimiter, Convert.ToBase64String(salt), Convert.ToBase64String(hash));
+            // Converte o array de bytes para uma string hexadecimal
+            StringBuilder builder = new StringBuilder();
+            for (int i = 0; i < bytes.Length; i++)
+            {
+                builder.Append(bytes[i].ToString("x2"));
+            }
+            return builder.ToString();
+        }
     }
 
-    public bool Verify(string passwordHash, string inputPassword)
+    public bool Verify(string hashedPassword, string passwordToVerify)
     {
-        var elements = passwordHash.Split(Delimiter);
-        var salt = Convert.FromBase64String(elements[0]);
-        var hash = Convert.FromBase64String(elements[1]);
-
-        var hashInput = Rfc2898DeriveBytes.Pbkdf2(inputPassword, salt, Iterations, _hashAlgorithmName, KeySize);
-        return CryptographicOperations.FixedTimeEquals(hash, hashInput);
+        string hashOfInput = Hash(passwordToVerify);
+        return hashOfInput.Equals(hashedPassword, StringComparison.OrdinalIgnoreCase);
     }
+
 }
