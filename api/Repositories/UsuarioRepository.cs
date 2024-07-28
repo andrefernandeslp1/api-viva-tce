@@ -1,3 +1,4 @@
+using System.Linq.Expressions;
 using API.Context;
 using API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -31,5 +32,10 @@ public class UsuarioRepository : RepositoryAsync<Usuario>, IUsuarioRepository
     public async Task<IEnumerable<Usuario>> GetAllWithFornecedoresAsync()
     {
         return await _context.Usuarios.Include(u => u.Fornecedor).ToListAsync();
+    }
+
+    public async Task<Usuario> GetByIdWithFornecedorAsync(int id)
+    {
+        return await _context.Usuarios.Include(u => u.Fornecedor).FirstOrDefaultAsync(predicate: (u) => u.Id == id);
     }
 }

@@ -38,9 +38,7 @@ namespace API.Controllers
         public async Task<ActionResult<UsuarioGetDTO>> Get(int id)
         {
 
-
-
-            var usuario = await _uow.UsuarioRepository.GetAsync(user => user.Id == id);
+            var usuario = await _uow.UsuarioRepository.GetByIdWithFornecedorAsync(id);
             if (usuario is null)
             {
                 return NotFound();
@@ -89,6 +87,7 @@ namespace API.Controllers
 
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
             var usuarioAtualizado = await _uow.UsuarioRepository.UpdateAsync(usuario);
+            
             _uow.Commit();
 
             var usuarioAtualizadoDTO = _mapper.Map<UsuarioPostDTO>(usuarioAtualizado);

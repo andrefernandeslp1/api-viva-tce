@@ -23,7 +23,7 @@ public class ServicoUsuarioRepository : RepositoryAsync<ServicoUsuario>, IServic
 
     public async Task<List<ServicoUsuario>> GetComprasByUser(int id)
     {
-        return await _context.ServicosUsuarios.Where(u => u.UsuarioId == id).ToListAsync();
+        return await _context.ServicosUsuarios.Include(s => s.Usuario).Include(s => s.Servico).Where(u => u.UsuarioId == id).ToListAsync();
     }
 
 }

@@ -66,7 +66,7 @@ namespace API.Controllers
 
 
         [HttpPut("{id:int}")]
-        [Authorize(Policy = "AdminPolicy")]
+        [Authorize]
         public async Task<ActionResult<FornecedorDTO>> Put (int id, FornecedorDTO fornecedorDTO)
         {
 

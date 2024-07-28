@@ -23,7 +23,7 @@ public class UsuarioGetDTO
     [Required]
     public string Role { get; set;}
 
-    public int? IdFornecedor { get; set; }
+    public int? FornecedorId { get; set; }
 
     public Fornecedor? Fornecedor { get; set; }
 
