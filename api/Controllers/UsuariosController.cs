@@ -91,6 +91,9 @@ namespace API.Controllers
             if (existeUsuário == null)
                 return NotFound("Usuário não encontrado.");
 
+            var passwordHashing = _passwordHasher.Hash(usuarioDTO.Senha);
+            usuarioDTO.Senha = passwordHashing;
+
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
             var usuarioAtualizado = await _uow.UsuarioRepository.UpdateAsync(usuario);
             
