@@ -153,13 +153,13 @@ namespace api.Migrations
 
             modelBuilder.Entity("API.Models.Servico", b =>
                 {
-                    b.HasOne("API.Models.Fornecedor", "fornecedor")
+                    b.HasOne("API.Models.Fornecedor", "Fornecedor")
                         .WithMany()
                         .HasForeignKey("FornecedorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("fornecedor");
+                    b.Navigation("Fornecedor");
                 });
 
             modelBuilder.Entity("API.Models.ServicoUsuario", b =>
