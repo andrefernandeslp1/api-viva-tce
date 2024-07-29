@@ -12,27 +12,30 @@ namespace Api.Controllers
     {
         private readonly TokenService _tokenService;
         private readonly IUnitOfWork _uow;
-
         private readonly IMapper _mapper;
+        private readonly IPasswordHasher _passwordHasher;
 
-        public AuthenticationController(TokenService tokenService, IUnitOfWork uow, IMapper mapper)
+        public AuthenticationController(TokenService tokenService, IUnitOfWork uow, IMapper mapper, IPasswordHasher passwordHasher)
         {
             _tokenService = tokenService;
             _uow = uow;
             _mapper = mapper;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpPost, Route("login")]
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
-            var usuario = await _uow.UsuarioRepository.GetAsync(u => u.Email == request.Email && u.Senha == request.Senha);
+            
+            var usuario = await _uow.UsuarioRepository.GetAsync(u => u.Email == request.Email);
+            var hash = _passwordHasher.Verify(usuario.Senha, request.Senha);
 
-        if (usuario == null)
+        if (usuario == null || !hash)
             return BadRequest("E-mail ou senha inválidos.");
 
-        var token = _tokenService.GenerateToken(usuario);
+            var token = _tokenService.GenerateToken(usuario);
 
-        return Ok(new { Token = token });
+            return Ok(new { Token = token });
 
 
         }
@@ -55,6 +58,9 @@ namespace Api.Controllers
             {
                 return Conflict("E-mail já cadastrado.");
             }
+
+            var passwordHashing = _passwordHasher.Hash(usuarioDTO.Senha);
+            usuarioDTO.Senha = passwordHashing;
 
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
 

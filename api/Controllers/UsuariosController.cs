@@ -14,10 +14,13 @@ namespace API.Controllers
         private readonly IUnitOfWork _uow;
         private readonly IMapper _mapper;
 
-        public UsuariosController(IUnitOfWork uow, IMapper mapper)
+        private readonly IPasswordHasher _passwordHasher;
+
+        public UsuariosController(IUnitOfWork uow, IMapper mapper, IPasswordHasher passwordHasher)
         {
             _uow = uow;
             _mapper = mapper;
+            _passwordHasher = passwordHasher;
         }
 
         [HttpGet]
@@ -61,6 +64,9 @@ namespace API.Controllers
                 return Conflict("E-mail já cadastrado.");
             }
 
+            var passwordHashing = _passwordHasher.Hash(usuarioDTO.Senha);
+            usuarioDTO.Senha = passwordHashing;
+
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
             var novoUsuario = await _uow.UsuarioRepository.CreateAsync(usuario);
             _uow.Commit();
@@ -84,6 +90,9 @@ namespace API.Controllers
             
             if (existeUsuário == null)
                 return NotFound("Usuário não encontrado.");
+
+            var passwordHashing = _passwordHasher.Hash(usuarioDTO.Senha);
+            usuarioDTO.Senha = passwordHashing;
 
             var usuario = _mapper.Map<Usuario>(usuarioDTO);
             var usuarioAtualizado = await _uow.UsuarioRepository.UpdateAsync(usuario);

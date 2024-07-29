@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace api.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240726165142_MigracaoInicial")]
-    partial class MigracaoInicial
+    [Migration("20240729162816_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,13 +156,13 @@ namespace api.Migrations
 
             modelBuilder.Entity("API.Models.Servico", b =>
                 {
-                    b.HasOne("API.Models.Fornecedor", "fornecedor")
+                    b.HasOne("API.Models.Fornecedor", "Fornecedor")
                         .WithMany()
                         .HasForeignKey("FornecedorId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("fornecedor");
+                    b.Navigation("Fornecedor");
                 });
 
             modelBuilder.Entity("API.Models.ServicoUsuario", b =>
